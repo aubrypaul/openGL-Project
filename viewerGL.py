@@ -42,7 +42,7 @@ class ViewerGL:
 
             for obj in self.objs:
                 GL.glUseProgram(obj.program)
-                if isinstance(obj, Object3D):
+                if obj.is_player:
                     self.update_camera(obj.program)
                 obj.draw()
 

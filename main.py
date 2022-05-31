@@ -16,15 +16,26 @@ def main():
     program3d_id = glutils.create_program_from_file('shader.vert', 'shader.frag')
     programGUI_id = glutils.create_program_from_file('gui.vert', 'gui.frag')
 
-    m = Mesh.load_obj('stegosaurus.obj')
+    m = Mesh.load_obj('model/stegosaurus.obj')
     m.normalize()
     m.apply_matrix(pyrr.matrix44.create_from_scale([2, 2, 2, 1]))
     tr = Transformation3D()
     tr.translation.y = -np.amin(m.vertices, axis=0)[1]
     tr.translation.z = -5
     tr.rotation_center.z = 0.2
-    texture = glutils.load_texture('stegosaurus.jpg')
-    o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr)
+    texture = glutils.load_texture('texture/stegosaurus.jpg')
+    o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr,True)
+    viewer.add_object(o)
+
+    m = Mesh.load_obj('model/zombie.obj')
+    m.normalize()
+    m.apply_matrix(pyrr.matrix44.create_from_scale([2, 2, 2, 1]))
+    tr_z = Transformation3D()
+    tr_z.translation.y = -np.amin(m.vertices, axis=0)[1]
+    tr_z.translation.z = -5
+    tr_z.rotation_center.z = 0.2
+    texture = glutils.load_texture('texture/zombie.png')
+    o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr_z)
     viewer.add_object(o)
 
     m = Mesh()
