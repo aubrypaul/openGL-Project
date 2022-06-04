@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-
 import OpenGL.GL as GL
 import glfw
 import pyrr
 import numpy as np
 from cpe3d import Object3D
+from zombie import Zombies
 
 class ViewerGL:
     def __init__(self):
@@ -31,7 +31,7 @@ class ViewerGL:
 
         self.objs = []
         self.touch = {}
-
+        
     def run(self):
         # boucle d'affichage
         while not glfw.window_should_close(self.window):
@@ -40,9 +40,11 @@ class ViewerGL:
 
             self.update_key()
 
+            self.zombies.move()
+
             for obj in self.objs:
                 GL.glUseProgram(obj.program)
-                if obj.is_player:
+                if obj.type == "player":
                     self.update_camera(obj.program)
                 obj.draw()
 
@@ -59,6 +61,11 @@ class ViewerGL:
     
     def add_object(self, obj):
         self.objs.append(obj)
+
+    def get_zombie(self, zombies):  
+        self.zombies = zombies
+        for zombie in self.zombies.all_zombies:
+            self.objs.append(zombie.object)
 
     def set_camera(self, cam):
         self.cam = cam
@@ -120,3 +127,4 @@ class ViewerGL:
             self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] += np.pi
             self.cam.transformation.rotation_center = self.objs[0].transformation.translation + self.objs[0].transformation.rotation_center
             self.cam.transformation.translation = self.objs[0].transformation.translation + pyrr.Vector3([0, 1, 5])
+        

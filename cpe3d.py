@@ -9,13 +9,13 @@ class Transformation3D:
         self.translation = translation.copy()
 
 class Object:
-    def __init__(self, vao, nb_triangle, program, texture, is_player = False):
+    def __init__(self, vao, nb_triangle, program, texture, type):
         self.vao = vao
         self.nb_triangle = nb_triangle
         self.program = program
         self.texture = texture
         self.visible = True
-        self.is_player = is_player
+        self.type = type
 
     def draw(self):
         if self.visible : 
@@ -25,9 +25,10 @@ class Object:
             GL.glDrawElements(GL.GL_TRIANGLES, 3*self.nb_triangle, GL.GL_UNSIGNED_INT, None)
 
 class Object3D(Object):
-    def __init__(self, vao, nb_triangle, program, texture, transformation, is_player=False):
-        super().__init__(vao, nb_triangle, program, texture,is_player)
+    def __init__(self, vao, nb_triangle, program, texture, transformation, type):
+        super().__init__(vao, nb_triangle, program, texture,type)
         self.transformation = transformation
+        self.type = type
 
     def draw(self):
         GL.glUseProgram(self.program)
