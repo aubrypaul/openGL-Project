@@ -40,13 +40,14 @@ class ViewerGL:
 
             self.update_key()
 
-            self.zombies.move()
+            self.update_zombie()
 
             for obj in self.objs:
                 GL.glUseProgram(obj.program)
                 if obj.type == "player":
                     self.update_camera(obj.program)
                 obj.draw()
+            print(len(self.objs))
 
             # changement de buffer d'affichage pour éviter un effet de scintillement
             glfw.swap_buffers(self.window)
@@ -62,10 +63,23 @@ class ViewerGL:
     def add_object(self, obj):
         self.objs.append(obj)
 
-    def get_zombie(self, zombies):  
+    def set_zombie(self, zombies):  
         self.zombies = zombies
         for zombie in self.zombies.all_zombies:
             self.objs.append(zombie.object)
+
+    def delete_zombie(self, zombie):
+        for i in range(len(self.objs)):
+            if self.objs[i] == zombie.object:
+                self.zombies.kill_zombie(zombie)
+                del self.objs[i]
+                break
+    
+    def update_zombie(self):
+        self.zombies.update()
+        for zombie in self.zombies.all_zombies:
+            if zombie.alive == False:
+                self.delete_zombie(zombie)
 
     def set_camera(self, cam):
         self.cam = cam

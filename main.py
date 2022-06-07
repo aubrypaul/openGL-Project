@@ -28,7 +28,7 @@ def main():
     o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr,"player")
     viewer.add_object(o)
 
-    viewer.get_zombie(Zombies(program3d_id, 8))
+    viewer.set_zombie(Zombies(program3d_id, 8))
 
     m = Mesh()
     p0, p1, p2, p3 = [-25, 0, -25], [25, 0, -25], [25, 0, 25], [-25, 0, 25]
