@@ -1,8 +1,7 @@
 import glutils
 from mesh import Mesh
-from cpe3d import Object3D, Camera, Transformation3D, Text
+from cpe3d import Object3D, Transformation3D
 import numpy as np
-import OpenGL.GL as GL
 import pyrr
 import random
 
@@ -59,5 +58,7 @@ class Zombies():
             tr.translation.x = 25*np.cos(theta)
             tr.translation.z = 25*np.sin(theta)
             tr.rotation_euler[pyrr.euler.index().yaw] += theta + np.pi/2
-            self.all_zombies.append(Zombie(tr,self.program3d_id))
+            zombie = Zombie(tr,self.program3d_id)
+            self.all_zombies.append(zombie)
+            return zombie
     

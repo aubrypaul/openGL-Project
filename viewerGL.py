@@ -80,6 +80,11 @@ class ViewerGL:
         for zombie in self.zombies.all_zombies:
             if zombie.alive == False:
                 self.delete_zombie(zombie)
+                self.add_zombie()
+    
+    def add_zombie(self):
+        zombie = self.zombies.add_zombie()
+        self.objs.append(zombie.object)
 
     def set_camera(self, cam):
         self.cam = cam
