@@ -62,7 +62,8 @@ class ViewerGL:
 
             for obj in self.objs:
                 GL.glUseProgram(obj.program)
-                self.update_camera(obj.program)
+                if type(obj) == Object3D:
+                    self.update_camera(obj.program)
                 obj.draw()
 
             # changement de buffer d'affichage pour éviter un effet de scintillement
@@ -110,7 +111,7 @@ class ViewerGL:
         self.objs.append(bullet.object)
     
     def update_bullet(self):
-        self.bullets.update()
+        self.bullets.update(self.zombies)
 
     def set_camera(self, cam):
         self.cam = cam

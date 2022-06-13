@@ -13,21 +13,29 @@ class Bullet():
         self.nb_triangles = nb_triangles
         self.texture = texture
         self.object = Object3D(self.vao, self.nb_triangles, self.program3d_id, self.texture, self.transform)
-        self.vel = 0.2
+        self.vel = 1
         self.show = True
 
-    def update(self):
+    def update(self, zombies):
         self.move()
+        self.check_collision(zombies)
 
     def move(self):
         self.transform.translation += \
                 pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.transform.rotation_euler), pyrr.Vector3([self.vel,0, 0]))
 
+    def check_collision(self, zombies):
+        for zombie in zombies.all_zombies:
+            tr = zombie.transform
+           
+            
+            
+
 class Bullets():
     def __init__(self, program3d_id, player_tr):
         self.model = Mesh.load_obj('model/bullet.obj')
         self.model.normalize()
-        self.model.apply_matrix(pyrr.matrix44.create_from_scale([1, 1, 1, 1]))
+        self.model.apply_matrix(pyrr.matrix44.create_from_scale([0.1, 0.1, 0.1, 1]))
         self.texture = glutils.load_texture('texture/bullet.jpg')
         self.vao = self.model.load_to_gpu()
         self.nb_triangles = self.model.get_nb_triangles()
@@ -43,6 +51,6 @@ class Bullets():
         self.all_bullets.append(bullet)
         return bullet
 
-    def update(self):
+    def update(self, zombies):
         for bullet in self.all_bullets:
-            bullet.update()
+            bullet.update(zombies)

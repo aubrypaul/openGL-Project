@@ -32,19 +32,8 @@ def main():
     viewer.init_bullets(Bullets(program3d_id, tr))
     viewer.set_zombie(Zombies(program3d_id, 8))
 
-    m = Mesh.load_obj('model/bullet.obj')
-    m.normalize()
-    m.apply_matrix(pyrr.matrix44.create_from_scale([0.5,0.5,0.5, 1]))
-    tr = Transformation3D()
-    tr.translation.y = -np.amin(m.vertices, axis=0)[1]
-    tr.translation.z = 0
-    tr.rotation_center.z = 0.2
-    texture = glutils.load_texture('texture/bullet.jpg')
-    o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr)
-    viewer.add_object(o)
-
     m = Mesh()
-    p0, p1, p2, p3 = [-50, 0, -50], [50, 0, -50], [50, 0, 50], [-50, 0, 50]
+    p0, p1, p2, p3 = [-50, 0, -50], [50, 0, -50], [50, 0, 50], [-50, 0, 50 ]
     n, c = [0, 1, 0], [1, 1, 1]
     t0, t1, t2, t3 = [0, 0], [1, 0], [1, 1], [0, 1]
     m.vertices = np.array([[p0 + n + c + t0], [p1 + n + c + t1], [p2 + n + c + t2], [p3 + n + c + t3]], np.float32)
