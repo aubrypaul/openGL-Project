@@ -15,7 +15,7 @@ def main():
     viewer.cam.transformation.rotation_center = viewer.cam.transformation.translation.copy()
 
     program3d_id = glutils.create_program_from_file('shader.vert', 'shader.frag')
-    # programGUI_id = glutils.create_program_from_file('gui.vert', 'gui.frag')
+    programGUI_id = glutils.create_program_from_file('gui.vert', 'gui.frag')
 
     m = Mesh.load_obj('model/stegosaurus.obj')
     m.normalize()
