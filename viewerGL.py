@@ -110,7 +110,7 @@ class ViewerGL:
         self.objs.append(bullet.object)
     
     def update_bullet(self):
-        self.bulllets.update()
+        self.bullets.update()
 
     def set_camera(self, cam):
         self.cam = cam
@@ -147,25 +147,28 @@ class ViewerGL:
         GL.glUniformMatrix4fv(loc, 1, GL.GL_FALSE, self.cam.projection)
 
     def update_key(self):
-        if glfw.KEY_UP in self.touch and self.touch[glfw.KEY_UP] > 0:
+        if glfw.KEY_W in self.touch and self.touch[glfw.KEY_W] > 0:
             self.objs[0].transformation.translation += \
                 pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0, 0.2]))
-        if glfw.KEY_DOWN in self.touch and self.touch[glfw.KEY_DOWN] > 0:
+        if glfw.KEY_S in self.touch and self.touch[glfw.KEY_S] > 0:
             self.objs[0].transformation.translation -= \
                 pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0, 0.2]))
-        if glfw.KEY_LEFT in self.touch and self.touch[glfw.KEY_LEFT] > 0:
-            if glfw.KEY_LEFT_CONTROL in self.touch and self.touch[glfw.KEY_LEFT_CONTROL]:
-                self.objs[0].transformation.rotation_euler[pyrr.euler.index().yaw] -= 0.015
-            else:
-                self.objs[0].transformation.rotation_euler[pyrr.euler.index().yaw] -= 0.1
-        if glfw.KEY_RIGHT in self.touch and self.touch[glfw.KEY_RIGHT] > 0:
-            if glfw.KEY_LEFT_CONTROL in self.touch and self.touch[glfw.KEY_LEFT_CONTROL]:
-                self.objs[0].transformation.rotation_euler[pyrr.euler.index().yaw] += 0.015
-            else:
-                self.objs[0].transformation.rotation_euler[pyrr.euler.index().yaw] += 0.1
+        if glfw.KEY_LEFT_CONTROL in self.touch and self.touch[glfw.KEY_LEFT_CONTROL]:
+            self.SENSI=0.0005
+        else:
+            self.SENSI=0.005
+        # if glfw.KEY_Q in self.touch and self.touch[glfw.KEY_Q] > 0:
+        
+        #     else:
+        #         self.objs[0].transformation.rotation_euler[pyrr.euler.index().yaw] -= 0.1
+        # if glfw.KEY_D in self.touch and self.touch[glfw.KEY_D] > 0:
+        #     if glfw.KEY_LEFT_CONTROL in self.touch and self.touch[glfw.KEY_LEFT_CONTROL]:
+        #         self.objs[0].transformation.rotation_euler[pyrr.euler.index().yaw] += 0.015
+        #     else:
+        #         self.objs[0].transformation.rotation_euler[pyrr.euler.index().yaw] += 0.1
 
 
-
+        #BOUGER LA CAM ------------------------
         # if glfw.KEY_I in self.touch and self.touch[glfw.KEY_I] > 0:
         #     self.cam.transformation.rotation_euler[pyrr.euler.index().roll] -= 0.1
         # if glfw.KEY_K in self.touch and self.touch[glfw.KEY_K] > 0:
@@ -175,7 +178,7 @@ class ViewerGL:
         # if glfw.KEY_L in self.touch and self.touch[glfw.KEY_L] > 0:
         #     self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] += 0.1
 
-        if glfw.KEY_F in self.touch and self.touch[glfw.KEY_F] > 0:
+        if glfw.KEY_SPACE in self.touch and self.touch[glfw.KEY_SPACE] > 0:
             self.fire_bullet()
 
         # if glfw.KEY_SPACE in self.touch and self.touch[glfw.KEY_SPACE] > 0:

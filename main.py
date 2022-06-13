@@ -94,7 +94,6 @@ def main():
     texture = glutils.load_texture('texture/wall.jpg')
     o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, Transformation3D())
     viewer.add_object(o)
-
     # FIN 4 MURS
 
 
