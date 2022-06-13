@@ -67,7 +67,7 @@ class Text(Object):
         self.value = value
         self.bottomLeft = bottomLeft
         self.topRight = topRight
-        super().__init__(vao, nb_triangle, program, texture, type)
+        super().__init__(vao, nb_triangle, program, texture)
 
     def draw(self):
         GL.glUseProgram(self.program)
