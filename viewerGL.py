@@ -42,6 +42,7 @@ class ViewerGL:
             self.update_key()
 
             self.update_zombie()
+            self.update_bullet()
 
             for obj in self.objs:
                 GL.glUseProgram(obj.program)
@@ -91,6 +92,9 @@ class ViewerGL:
     def fire_bullet(self):
         bullet = self.bulllets.add_bullet()
         self.objs.append(bullet.object)
+    
+    def update_bullet(self):
+        self.bulllets.update()
 
     def set_camera(self, cam):
         self.cam = cam

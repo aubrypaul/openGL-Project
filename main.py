@@ -1,3 +1,4 @@
+from bullet import Bullets
 from viewerGL import ViewerGL
 import glutils
 from mesh import Mesh
@@ -28,6 +29,7 @@ def main():
     o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr)
     viewer.add_object(o)
 
+    viewer.init_bullets(Bullets(program3d_id, tr))
     viewer.set_zombie(Zombies(program3d_id, 8))
 
     m = Mesh.load_obj('model/bullet.obj')

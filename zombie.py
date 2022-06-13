@@ -6,15 +6,13 @@ import pyrr
 import random
 
 class Zombie():
-    def __init__(self, transform, program3d_id):
-        self.model = Mesh.load_obj('model/zombie.obj')
-        self.model.normalize()
-        self.model.apply_matrix(pyrr.matrix44.create_from_scale([1, 1, 1, 1]))
-        self.texture = glutils.load_texture('texture/zombie.png')
+    def __init__(self, transform, program3d_id, vao, nb_triangles, texture):
         self.transform = transform
         self.program3d_id = program3d_id
-        self.transform.translation.y = -np.amin(self.model.vertices, axis=0)[1]
-        self.object = Object3D(self.model.load_to_gpu(), self.model.get_nb_triangles(), self.program3d_id, self.texture, self.transform)
+        self.vao = vao
+        self.nb_triangles = nb_triangles
+        self.texture = texture
+        self.object = Object3D(self.vao, self.nb_triangles, self.program3d_id, self.texture, self.transform)
         self.vel = random.random()*0.05
         self.alive = True
 
@@ -29,6 +27,12 @@ class Zombie():
 
 class Zombies():
     def __init__(self, program3d_id, n):
+        self.model = Mesh.load_obj('model/zombie.obj')
+        self.model.normalize()
+        self.model.apply_matrix(pyrr.matrix44.create_from_scale([1, 1, 1, 1]))
+        self.texture = glutils.load_texture('texture/zombie.png')
+        self.vao = self.model.load_to_gpu()
+        self.nb_triangles = self.model.get_nb_triangles()
         self.all_zombies = []
         self.program3d_id = program3d_id
         for i in range(n):
@@ -58,7 +62,8 @@ class Zombies():
             tr.translation.x = 25*np.cos(theta)
             tr.translation.z = 25*np.sin(theta)
             tr.rotation_euler[pyrr.euler.index().yaw] += theta + np.pi/2
-            zombie = Zombie(tr,self.program3d_id)
+            tr.translation.y = -np.amin(self.model.vertices, axis=0)[1]
+            zombie = Zombie(tr,self.program3d_id,self.vao,self.nb_triangles,self.texture)
             self.all_zombies.append(zombie)
             return zombie
     
