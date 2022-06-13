@@ -11,7 +11,6 @@ class ViewerGL:
     def __init__(self):
 
 
-        self.SENSI = 0.005
         self.lastX, self.lastY = 0, 0
 
 
