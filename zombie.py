@@ -13,7 +13,7 @@ class Zombie():
         self.nb_triangles = nb_triangles
         self.texture = texture
         self.object = Object3D(self.vao, self.nb_triangles, self.program3d_id, self.texture, self.transform)
-        self.vel =  0.05 + random.random()*0.15
+        self.vel =  0.05 + random.random()*0.05
         self.alive = True
 
     def move(self):
@@ -59,8 +59,8 @@ class Zombies():
     def add_zombie(self):
             tr = Transformation3D()
             theta = random.random()*2*np.pi
-            tr.translation.x = 25*np.cos(theta)
-            tr.translation.z = 25*np.sin(theta)
+            tr.translation.x = 50*np.cos(theta)
+            tr.translation.z = 50*np.sin(theta)
             tr.rotation_euler[pyrr.euler.index().yaw] += theta + np.pi/2
             tr.translation.y = -np.amin(self.model.vertices, axis=0)[1]
             zombie = Zombie(tr,self.program3d_id,self.vao,self.nb_triangles,self.texture)
