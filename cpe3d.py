@@ -9,13 +9,12 @@ class Transformation3D:
         self.translation = translation.copy()
 
 class Object:
-    def __init__(self, vao, nb_triangle, program, texture, type):
+    def __init__(self, vao, nb_triangle, program, texture):
         self.vao = vao
         self.nb_triangle = nb_triangle
         self.program = program
         self.texture = texture
         self.visible = True
-        self.type = type
 
     def draw(self):
         if self.visible : 
@@ -25,10 +24,9 @@ class Object:
             GL.glDrawElements(GL.GL_TRIANGLES, 3*self.nb_triangle, GL.GL_UNSIGNED_INT, None)
 
 class Object3D(Object):
-    def __init__(self, vao, nb_triangle, program, texture, transformation, type):
-        super().__init__(vao, nb_triangle, program, texture,type)
+    def __init__(self, vao, nb_triangle, program, texture, transformation):
+        super().__init__(vao, nb_triangle, program, texture)
         self.transformation = transformation
-        self.type = type
 
     def draw(self):
         GL.glUseProgram(self.program)
@@ -65,7 +63,7 @@ class Camera:
         self.projection = projection
 
 class Text(Object):
-    def __init__(self, value, bottomLeft, topRight, vao, nb_triangle, program, texture, type = "text"):
+    def __init__(self, value, bottomLeft, topRight, vao, nb_triangle, program, texture):
         self.value = value
         self.bottomLeft = bottomLeft
         self.topRight = topRight

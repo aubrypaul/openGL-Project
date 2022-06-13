@@ -5,6 +5,7 @@ import pyrr
 import numpy as np
 from cpe3d import Object3D
 from zombie import Zombies
+from bullet import Bullets
 
 class ViewerGL:
     def __init__(self):
@@ -44,8 +45,7 @@ class ViewerGL:
 
             for obj in self.objs:
                 GL.glUseProgram(obj.program)
-                if obj.type == "player":
-                    self.update_camera(obj.program)
+                self.update_camera(obj.program)
                 obj.draw()
 
             # changement de buffer d'affichage pour éviter un effet de scintillement
@@ -84,6 +84,13 @@ class ViewerGL:
     def add_zombie(self):
         zombie = self.zombies.add_zombie()
         self.objs.append(zombie.object)
+
+    def init_bullets(self, bullets):
+        self.bulllets = bullets
+
+    def fire_bullet(self):
+        bullet = self.bulllets.add_bullet()
+        self.objs.append(bullet.object)
 
     def set_camera(self, cam):
         self.cam = cam
@@ -147,6 +154,9 @@ class ViewerGL:
             self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] -= 0.1
         if glfw.KEY_L in self.touch and self.touch[glfw.KEY_L] > 0:
             self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] += 0.1
+
+        if glfw.KEY_F in self.touch and self.touch[glfw.KEY_F] > 0:
+            self.fire_bullet()
 
         if glfw.KEY_SPACE in self.touch and self.touch[glfw.KEY_SPACE] > 0:
             self.cam.transformation.rotation_euler = self.objs[0].transformation.rotation_euler.copy() 
