@@ -67,7 +67,7 @@ class Text(Object):
         self.value = value
         self.bottomLeft = bottomLeft
         self.topRight = topRight
-        super().__init__(vao, nb_triangle, program, texture)
+        super().__init__(vao, nb_triangle, program, texture, type)
 
     def draw(self):
         GL.glUseProgram(self.program)
@@ -77,7 +77,7 @@ class Text(Object):
         loc = GL.glGetUniformLocation(self.program, "size")
         if (loc == -1) :
             print("Pas de variable uniforme : size")
-        GL.glUniform2f(loc, size[0], size[1], 0)
+        GL.glUniform2f(loc, size[0], size[1])
         GL.glBindVertexArray(self.vao)
         GL.glBindTexture(GL.GL_TEXTURE_2D, self.texture)
         for idx, c in enumerate(self.value):
