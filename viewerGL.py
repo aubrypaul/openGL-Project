@@ -110,7 +110,7 @@ class ViewerGL:
         self.objs.append(bullet.object)
     
     def update_bullet(self):
-        self.bulllets.update()
+        self.bullets.update()
 
     def set_camera(self, cam):
         self.cam = cam
