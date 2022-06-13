@@ -65,7 +65,7 @@ class Camera:
         self.projection = projection
 
 class Text(Object):
-    def __init__(self, value, bottomLeft, topRight, vao, nb_triangle, program, texture):
+    def __init__(self, value, bottomLeft, topRight, vao, nb_triangle, program, texture, type = "text"):
         self.value = value
         self.bottomLeft = bottomLeft
         self.topRight = topRight
