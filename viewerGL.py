@@ -9,6 +9,13 @@ from bullet import Bullets
 
 class ViewerGL:
     def __init__(self):
+
+
+        self.SENSI = 0.005
+        self.lastX, self.lastY = 0, 0
+
+
+
         # initialisation de la librairie GLFW
         glfw.init()
         # paramétrage du context OpenGL
@@ -21,6 +28,11 @@ class ViewerGL:
         self.window = glfw.create_window(800, 800, 'OpenGL', None, None)
         # paramétrage de la fonction de gestion des évènements
         glfw.set_key_callback(self.window, self.key_callback)
+
+        #souris
+        glfw.set_cursor_pos_callback(self.window, self.mouse_callback)
+        glfw.set_input_mode(self.window, glfw.CURSOR, glfw.CURSOR_DISABLED)
+
         # activation du context OpenGL pour la fenêtre
         glfw.make_context_current(self.window)
         glfw.swap_interval(1)
@@ -32,6 +44,10 @@ class ViewerGL:
 
         self.objs = []
         self.touch = {}
+
+        if (glfw.raw_mouse_motion_supported()):
+            print("SOURIS AU NATUREL")
+            glfw.set_input_mode(self.window, glfw.RAW_MOUSE_MOTION, glfw.TRUE);
         
     def run(self):
         # boucle d'affichage
@@ -86,10 +102,10 @@ class ViewerGL:
         self.objs.append(zombie.object)
 
     def init_bullets(self, bullets):
-        self.bulllets = bullets
+        self.bullets = bullets
 
     def fire_bullet(self):
-        bullet = self.bulllets.add_bullet()
+        bullet = self.bullets.add_bullet()
         self.objs.append(bullet.object)
 
     def set_camera(self, cam):
@@ -156,3 +172,19 @@ class ViewerGL:
             self.cam.transformation.rotation_center = self.objs[0].transformation.translation + self.objs[0].transformation.rotation_center
             self.cam.transformation.translation = self.objs[0].transformation.translation + pyrr.Vector3([0, 1, 5])
         
+    def mouse_callback(self, window, xpos, ypos):
+
+        xoffset = (xpos - self.lastX)*self.SENSI
+        yoffset = (ypos - self.lastY)*self.SENSI
+
+        self.lastX = xpos
+        self.lastY = ypos
+
+        roll = self.cam.transformation.rotation_euler[pyrr.euler.index().roll]
+
+        if roll + yoffset >= -0.2 and roll + yoffset <= 1:
+            self.cam.transformation.rotation_euler[pyrr.euler.index().roll] += yoffset
+        self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] += xoffset
+
+        #Forcer personnage à suivre la cam
+        self.objs[0].transformation.rotation_euler[pyrr.euler.index().yaw] = self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] + np.pi
