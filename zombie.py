@@ -13,7 +13,7 @@ class Zombie():
         self.nb_triangles = nb_triangles
         self.texture = texture
         self.object = Object3D(self.vao, self.nb_triangles, self.program3d_id, self.texture, self.transform)
-        self.vel = random.random()*0.05
+        self.vel =  0.05 + random.random()*0.15
         self.alive = True
 
     def move(self):
