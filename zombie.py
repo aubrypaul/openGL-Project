@@ -14,7 +14,7 @@ class Zombie():
         self.transform = transform
         self.program3d_id = program3d_id
         self.transform.translation.y = -np.amin(self.model.vertices, axis=0)[1]
-        self.object = Object3D(self.model.load_to_gpu(), self.model.get_nb_triangles(), self.program3d_id, self.texture, self.transform, "zombie")
+        self.object = Object3D(self.model.load_to_gpu(), self.model.get_nb_triangles(), self.program3d_id, self.texture, self.transform)
         self.vel = random.random()*0.05
         self.alive = True
 

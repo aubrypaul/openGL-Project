@@ -25,10 +25,21 @@ def main():
     tr.translation.z = 0
     tr.rotation_center.z = 0.2
     texture = glutils.load_texture('texture/stegosaurus.jpg')
-    o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr,"player")
+    o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr)
     viewer.add_object(o)
 
     viewer.set_zombie(Zombies(program3d_id, 8))
+
+    m = Mesh.load_obj('model/bullet.obj')
+    m.normalize()
+    m.apply_matrix(pyrr.matrix44.create_from_scale([0.5,0.5,0.5, 1]))
+    tr = Transformation3D()
+    tr.translation.y = -np.amin(m.vertices, axis=0)[1]
+    tr.translation.z = 0
+    tr.rotation_center.z = 0.2
+    texture = glutils.load_texture('texture/bullet.png')
+    o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr)
+    viewer.add_object(o)
 
     m = Mesh()
     p0, p1, p2, p3 = [-25, 0, -25], [25, 0, -25], [25, 0, 25], [-25, 0, 25]
@@ -37,7 +48,7 @@ def main():
     m.vertices = np.array([[p0 + n + c + t0], [p1 + n + c + t1], [p2 + n + c + t2], [p3 + n + c + t3]], np.float32)
     m.faces = np.array([[0, 1, 2], [0, 2, 3]], np.uint32)
     texture = glutils.load_texture('texture/grass.jpg')
-    o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, Transformation3D(),"environement")
+    o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, Transformation3D())
     viewer.add_object(o)
 
     # vao = Text.initalize_geometry()
