@@ -9,13 +9,13 @@ class Transformation3D:
         self.translation = translation.copy()
 
 class Object:
-    def __init__(self, vao, nb_triangle, program, texture):
+    def __init__(self, vao, nb_triangle, program, texture, type):
         self.vao = vao
         self.nb_triangle = nb_triangle
         self.program = program
         self.texture = texture
         self.visible = True
-       
+        self.type
 
     def draw(self):
         if self.visible : 
@@ -26,9 +26,9 @@ class Object:
 
 class Object3D(Object):
     def __init__(self, vao, nb_triangle, program, texture, transformation):
-        super().__init__(vao, nb_triangle, program, texture)
+        super().__init__(vao, nb_triangle, program, texture, type)
         self.transformation = transformation
-        
+        self.type
 
     def draw(self):
         GL.glUseProgram(self.program)
