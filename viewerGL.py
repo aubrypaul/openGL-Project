@@ -24,9 +24,10 @@ class ViewerGL:
         glfw.window_hint(glfw.OPENGL_PROFILE, glfw.OPENGL_CORE_PROFILE)
         # création et paramétrage de la fenêtre
         glfw.window_hint(glfw.RESIZABLE, False)
-        self.window = glfw.create_window(800, 800, 'OpenGL', None, None)
+        self.window = glfw.create_window(900, 900, 'OpenGL', None, None)
         # paramétrage de la fonction de gestion des évènements
         glfw.set_key_callback(self.window, self.key_callback)
+        glfw.set_mouse_button_callback(self.window, self.click_callback)
 
         #souris
         glfw.set_cursor_pos_callback(self.window, self.mouse_callback)
@@ -75,6 +76,10 @@ class ViewerGL:
         if key == glfw.KEY_ESCAPE and action == glfw.PRESS:
             glfw.set_window_should_close(win, glfw.TRUE)
         self.touch[key] = action
+
+    def click_callback(self, win, key, action, mods):
+        self.touch[key] = action
+
     
     def add_object(self, obj):
         self.objs.append(obj)
@@ -148,15 +153,35 @@ class ViewerGL:
 
     def update_key(self):
         if glfw.KEY_W in self.touch and self.touch[glfw.KEY_W] > 0:
-            self.objs[0].transformation.translation += \
-                pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0, 0.2]))
+            if glfw.KEY_LEFT_SHIFT in self.touch and self.touch[glfw.KEY_LEFT_SHIFT] > 0:
+                self.objs[0].transformation.translation += \
+                    pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0, 0.3]))
+            else:
+                self.objs[0].transformation.translation += \
+                    pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0, 0.2]))
         if glfw.KEY_S in self.touch and self.touch[glfw.KEY_S] > 0:
             self.objs[0].transformation.translation -= \
                 pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0, 0, 0.2]))
-        if glfw.KEY_LEFT_CONTROL in self.touch and self.touch[glfw.KEY_LEFT_CONTROL]:
+        if glfw.KEY_A in self.touch and self.touch[glfw.KEY_A] > 0:
+            self.objs[0].transformation.translation += \
+                pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.1, 0, 0]))
+        if glfw.KEY_D in self.touch and self.touch[glfw.KEY_D] > 0:
+            self.objs[0].transformation.translation -= \
+                pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.1, 0, 0]))
+
+        if glfw.MOUSE_BUTTON_RIGHT in self.touch and self.touch[glfw.MOUSE_BUTTON_RIGHT]:
             self.SENSI=0.0005
+            self.cam.transformation.rotation_euler = self.objs[0].transformation.rotation_euler.copy() 
+            self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] += np.pi
+            self.cam.transformation.rotation_center = self.objs[0].transformation.translation + self.objs[0].transformation.rotation_center
+            self.cam.transformation.translation = self.objs[0].transformation.translation + pyrr.Vector3([0, 1, 2])
         else:
             self.SENSI=0.005
+            self.cam.transformation.rotation_euler = self.objs[0].transformation.rotation_euler.copy() 
+            self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] += np.pi
+            self.cam.transformation.rotation_center = self.objs[0].transformation.translation + self.objs[0].transformation.rotation_center
+            self.cam.transformation.translation = self.objs[0].transformation.translation + pyrr.Vector3([0, 1, 5])
+
         # if glfw.KEY_Q in self.touch and self.touch[glfw.KEY_Q] > 0:
         
         #     else:
@@ -178,14 +203,11 @@ class ViewerGL:
         # if glfw.KEY_L in self.touch and self.touch[glfw.KEY_L] > 0:
         #     self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] += 0.1
 
-        if glfw.KEY_SPACE in self.touch and self.touch[glfw.KEY_SPACE] > 0:
+        if glfw.MOUSE_BUTTON_LEFT in self.touch and self.touch[glfw.MOUSE_BUTTON_LEFT] > 0:
             self.fire_bullet()
 
         # if glfw.KEY_SPACE in self.touch and self.touch[glfw.KEY_SPACE] > 0:
-        self.cam.transformation.rotation_euler = self.objs[0].transformation.rotation_euler.copy() 
-        self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] += np.pi
-        self.cam.transformation.rotation_center = self.objs[0].transformation.translation + self.objs[0].transformation.rotation_center
-        self.cam.transformation.translation = self.objs[0].transformation.translation + pyrr.Vector3([0, 1, 5])
+
         
     def mouse_callback(self, window, xpos, ypos):
 
