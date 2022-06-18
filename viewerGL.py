@@ -59,7 +59,7 @@ class ViewerGL:
 
             self.update_zombie()
             self.update_bullet()
-            print(len(self.objs))
+            self.update_player()
 
             for obj in self.objs:
                 GL.glUseProgram(obj.program)
@@ -127,6 +127,13 @@ class ViewerGL:
                 self.bullets.destroy_bullet(bullet)
                 del self.objs[i]
                 break
+    
+    def init_player(self,player):
+        self.player = player
+        self.objs.append(player.object)
+    
+    def update_player(self):
+        self.player.update()
 
     def set_camera(self, cam):
         self.cam = cam
