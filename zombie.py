@@ -18,7 +18,7 @@ class Zombie():
 
     def move(self):
         self.transform.translation += \
-                pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.transform.rotation_euler), pyrr.Vector3([0, 0, self.vel]))
+                pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.transform.rotation_euler), pyrr.Vector3([0, 0, self.vel])) 
     
     def check(self):
         if self.transform.translation.x < self.vel and self.transform.translation.x > -self.vel and self.transform.translation.z < self.vel and self.transform.translation.z > -self.vel:

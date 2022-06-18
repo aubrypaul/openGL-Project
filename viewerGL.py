@@ -80,6 +80,8 @@ class ViewerGL:
 
     def click_callback(self, win, key, action, mods):
         self.touch[key] = action
+        if key == glfw.MOUSE_BUTTON_LEFT and action == glfw.PRESS:
+            self.fire_bullet()
 
     
     def add_object(self, obj):
@@ -224,14 +226,13 @@ class ViewerGL:
         #     self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] += 0.1
 
 
-        if glfw.MOUSE_BUTTON_LEFT in self.touch and self.touch[glfw.MOUSE_BUTTON_LEFT] > 0 :
-            self.fire_bullet()
+        
+            
             
 
 
         # if glfw.KEY_SPACE in self.touch and self.touch[glfw.KEY_SPACE] > 0:
 
-        
     def mouse_callback(self, window, xpos, ypos):
 
         xoffset = (xpos - self.lastX)*self.SENSI
