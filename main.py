@@ -5,8 +5,8 @@ from mesh import Mesh
 from cpe3d import Object3D, Camera, Transformation3D, Text
 import numpy as np
 import OpenGL.GL as GL
-import pyrr
 from zombie import Zombies
+from player import Player
 
 def main():
     viewer = ViewerGL()
@@ -18,18 +18,8 @@ def main():
     program3d_id = glutils.create_program_from_file('shader.vert', 'shader.frag')
     programGUI_id = glutils.create_program_from_file('gui.vert', 'gui.frag')
 
-    m = Mesh.load_obj('model/stegosaurus.obj')
-    m.normalize()
-    m.apply_matrix(pyrr.matrix44.create_from_scale([2, 2, 2, 1]))
-    tr = Transformation3D()
-    tr.translation.y = -np.amin(m.vertices, axis=0)[1]
-    tr.translation.z = 0
-    tr.rotation_center.z = 0.2
-    texture = glutils.load_texture('texture/stegosaurus.jpg')
-    o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr)
-    viewer.add_object(o)
-
-    viewer.init_bullets(Bullets(program3d_id, tr))
+    viewer.init_player(Player(program3d_id))
+    viewer.init_bullets(Bullets(program3d_id, viewer.player.transformation))
     viewer.set_zombie(Zombies(program3d_id, 8))
 
     m = Mesh()
