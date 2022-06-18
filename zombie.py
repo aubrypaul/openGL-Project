@@ -55,7 +55,7 @@ class Zombies():
             if self.all_zombies[i] == zombie:
                 del self.all_zombies[i]
                 break
-    
+
     def add_zombie(self):
             tr = Transformation3D()
             theta = random.random()*2*np.pi
