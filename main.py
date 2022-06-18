@@ -20,7 +20,7 @@ def main():
 
     viewer.init_player(Player(program3d_id))
     viewer.init_bullets(Bullets(program3d_id, viewer.player.transformation))
-    viewer.set_zombie(Zombies(program3d_id, 8))
+    viewer.set_zombie(Zombies(program3d_id, 8, viewer.player.transformation))
 
     m = Mesh()
     p0, p1, p2, p3 = [-50, 0, -50], [50, 0, -50], [50, 0, 50], [-50, 0, 50 ]
