@@ -6,6 +6,7 @@ import numpy as np
 from cpe3d import Object3D
 from zombie import Zombies
 from bullet import Bullets
+import time
 
 class ViewerGL:
     def __init__(self):
@@ -46,7 +47,6 @@ class ViewerGL:
         self.touch = {}
 
         if (glfw.raw_mouse_motion_supported()):
-            print("SOURIS AU NATUREL")
             glfw.set_input_mode(self.window, glfw.RAW_MOUSE_MOTION, glfw.TRUE);
         
     def run(self):
@@ -175,12 +175,14 @@ class ViewerGL:
             self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] += np.pi
             self.cam.transformation.rotation_center = self.objs[0].transformation.translation + self.objs[0].transformation.rotation_center
             self.cam.transformation.translation = self.objs[0].transformation.translation + pyrr.Vector3([0, 1, 2])
+            
         else:
             self.SENSI=0.005
             self.cam.transformation.rotation_euler = self.objs[0].transformation.rotation_euler.copy() 
             self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] += np.pi
             self.cam.transformation.rotation_center = self.objs[0].transformation.translation + self.objs[0].transformation.rotation_center
             self.cam.transformation.translation = self.objs[0].transformation.translation + pyrr.Vector3([0, 1, 5])
+            
 
         # if glfw.KEY_Q in self.touch and self.touch[glfw.KEY_Q] > 0:
         
