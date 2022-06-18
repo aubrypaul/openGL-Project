@@ -30,7 +30,7 @@ def main():
     viewer.add_object(o)
 
     viewer.init_bullets(Bullets(program3d_id, tr))
-    viewer.set_zombie(Zombies(program3d_id, 8))
+    viewer.set_zombie(Zombies(program3d_id, 8, tr))
 
     m = Mesh()
     p0, p1, p2, p3 = [-50, 0, -50], [50, 0, -50], [50, 0, 50], [-50, 0, 50 ]
