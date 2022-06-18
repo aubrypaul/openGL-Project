@@ -59,6 +59,7 @@ class ViewerGL:
 
             self.update_zombie()
             self.update_bullet()
+            print(len(self.objs))
 
             for obj in self.objs:
                 GL.glUseProgram(obj.program)
@@ -116,6 +117,16 @@ class ViewerGL:
     
     def update_bullet(self):
         self.bullets.update(self.zombies)
+        for bullet in self.bullets.all_bullets:
+            if bullet.alive == False:
+                self.delete_bullet(bullet)
+
+    def delete_bullet(self, bullet):
+        for i in range(len(self.objs)):
+            if self.objs[i] == bullet.object:
+                self.bullets.destroy_bullet(bullet)
+                del self.objs[i]
+                break
 
     def set_camera(self, cam):
         self.cam = cam
@@ -205,8 +216,11 @@ class ViewerGL:
         # if glfw.KEY_L in self.touch and self.touch[glfw.KEY_L] > 0:
         #     self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] += 0.1
 
-        if glfw.MOUSE_BUTTON_LEFT in self.touch and self.touch[glfw.MOUSE_BUTTON_LEFT] > 0:
+
+        if glfw.MOUSE_BUTTON_LEFT in self.touch and self.touch[glfw.MOUSE_BUTTON_LEFT] > 0 :
             self.fire_bullet()
+            
+
 
         # if glfw.KEY_SPACE in self.touch and self.touch[glfw.KEY_SPACE] > 0:
 
