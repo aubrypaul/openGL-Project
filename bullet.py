@@ -14,11 +14,12 @@ class Bullet():
         self.texture = texture
         self.object = Object3D(self.vao, self.nb_triangles, self.program3d_id, self.texture, self.transform)
         self.vel = 1
-        self.show = True
+        self.alive = True
 
     def update(self, zombies):
         self.move()
         self.check_collision(zombies)
+        self.in_limit()
 
     def move(self):
         self.transform.translation += \
@@ -27,8 +28,12 @@ class Bullet():
     def check_collision(self, zombies):
         for zombie in zombies.all_zombies:
             tr = zombie.transform
-           
-            
+            if tr.translation.x > self.transform.translation.x and tr.translation.x < self.transform.translation.x + 0.034 + self.vel and tr.translation.z > self.transform.translation.z and tr.translation.z < self.transform.translation.z + 0.01:
+                zombie.alive = False
+
+    def in_limit(self):
+        if abs(self.transform.translation.x) > 50 or abs(self.transform.translation.z) > 50:
+            self.alive = False
             
 
 class Bullets():
@@ -54,3 +59,9 @@ class Bullets():
     def update(self, zombies):
         for bullet in self.all_bullets:
             bullet.update(zombies)
+
+    def destroy_bullet(self,bullet):
+        for i in range(len(self.all_bullets)):
+            if self.all_bullets[i] == bullet:
+                del self.all_bullets[i]
+                break

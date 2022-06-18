@@ -58,6 +58,7 @@ class ViewerGL:
 
             self.update_zombie()
             self.update_bullet()
+            print(len(self.objs))
 
             for obj in self.objs:
                 GL.glUseProgram(obj.program)
@@ -111,6 +112,16 @@ class ViewerGL:
     
     def update_bullet(self):
         self.bullets.update(self.zombies)
+        for bullet in self.bullets.all_bullets:
+            if bullet.alive == False:
+                self.delete_bullet(bullet)
+
+    def delete_bullet(self, bullet):
+        for i in range(len(self.objs)):
+            if self.objs[i] == bullet.object:
+                self.bullets.destroy_bullet(bullet)
+                del self.objs[i]
+                break
 
     def set_camera(self, cam):
         self.cam = cam
