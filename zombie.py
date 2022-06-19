@@ -6,22 +6,23 @@ import pyrr
 import random
 
 class Zombie():
-    def __init__(self, transform, program3d_id, vao, nb_triangles, texture):
+    def __init__(self, transform, program3d_id, vao, nb_triangles, texture, player_tr):
         self.transform = transform
         self.program3d_id = program3d_id
         self.vao = vao
         self.nb_triangles = nb_triangles
         self.texture = texture
         self.object = Object3D(self.vao, self.nb_triangles, self.program3d_id, self.texture, self.transform)
-        self.vel =  0.05 + random.random()*0.05
+        self.vel =  0.1 + random.random()*0.05
         self.alive = True
+        self.player_tr = player_tr
 
     def move(self):
         self.transform.translation += \
-                pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.transform.rotation_euler), pyrr.Vector3([0, 0, self.vel])) 
+                pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.transform.rotation_euler), pyrr.Vector3([0, 0, self.vel]))
     
-    def check(self):
-        if self.transform.translation.x < self.vel and self.transform.translation.x > -self.vel and self.transform.translation.z < self.vel and self.transform.translation.z > -self.vel:
+    def in_limit(self):
+        if abs(self.transform.translation.x) > 50 or abs(self.transform.translation.z) > 50:
             self.alive = False
 
 
@@ -39,17 +40,18 @@ class Zombies():
         for i in range(n):
             self.add_zombie()
 
+
     def update(self):
         self.move()
-        self.check()
+        self.in_limit()
 
     def move(self):
         for zombie in self.all_zombies:
             zombie.move()
     
-    def check(self):
+    def in_limit(self):
         for zombie in self.all_zombies:
-            zombie.check()
+            zombie.in_limit()
     
     def kill_zombie(self,zombie):
         for i in range(len(self.all_zombies)):
@@ -64,7 +66,7 @@ class Zombies():
             tr.translation.z = 50*np.sin(theta) + self.player_tr.translation.z
             tr.rotation_euler[pyrr.euler.index().yaw] += theta + np.pi/2
             tr.translation.y = -np.amin(self.model.vertices, axis=0)[1]
-            zombie = Zombie(tr,self.program3d_id,self.vao,self.nb_triangles,self.texture)
+            zombie = Zombie(tr,self.program3d_id,self.vao,self.nb_triangles,self.texture, self.player_tr)
             self.all_zombies.append(zombie)
             return zombie
     

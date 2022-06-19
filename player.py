@@ -16,9 +16,13 @@ class Player():
             self.transformation.rotation_center.z = 0.2
             self.texture = glutils.load_texture('texture/stegosaurus.jpg')
             self.object = Object3D(self.model.load_to_gpu(), self.model.get_nb_triangles(), program3d_id, self.texture, self.transformation)
+            self.alive = True
+            self.life = 50
 
-    def update(self):
+    def update(self, zombies):
         self.check_collision()
+        self.vie(zombies)
+        # print(self.life, self.alive)
     
     def check_collision(self):
         if self.transformation.translation.x > 50 - 1:
@@ -29,3 +33,12 @@ class Player():
             self.transformation.translation.z = 50 - 1
         if self.transformation.translation.z < -50 + 1:
             self.transformation.translation.z = -50 + 1
+
+    def vie(self, zombies):
+        for zombie in zombies.all_zombies:
+            tr = zombie.transform
+            if tr.translation.x > self.transformation.translation.x - 0.5 and tr.translation.x < self.transformation.translation.x + 0.5 and tr.translation.z > self.transformation.translation.z - 0.5 and tr.translation.z < self.transformation.translation.z + 0.5:
+                self.life -= 1
+        if self.life <= 0:
+            self.alive = False
+        return self.alive

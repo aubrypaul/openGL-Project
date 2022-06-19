@@ -67,6 +67,9 @@ class ViewerGL:
                     self.update_camera(obj.program)
                 obj.draw()
 
+            if self.player.vie(self.zombies) == False:
+                glfw.set_window_should_close(self.window, glfw.TRUE)
+
             # changement de buffer d'affichage pour éviter un effet de scintillement
             glfw.swap_buffers(self.window)
             # gestion des évènements
@@ -135,10 +138,14 @@ class ViewerGL:
         self.objs.append(player.object)
     
     def update_player(self):
-        self.player.update()
+        self.player.update(self.zombies)
+    
+    def vie_player(self):
+        self.player.vie(self.zombies)
 
     def set_camera(self, cam):
         self.cam = cam
+
 
     def update_camera(self, prog):
         GL.glUseProgram(prog)
