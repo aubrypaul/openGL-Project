@@ -10,6 +10,7 @@ from player import Player
 
 def main():
     viewer = ViewerGL()
+    
 
     viewer.set_camera(Camera())
     viewer.cam.transformation.translation.y = 2
@@ -17,6 +18,7 @@ def main():
 
     program3d_id = glutils.create_program_from_file('shader.vert', 'shader.frag')
     programGUI_id = glutils.create_program_from_file('gui.vert', 'gui.frag')
+
 
     viewer.init_player(Player(program3d_id))
     viewer.init_bullets(Bullets(program3d_id, viewer.player.transformation))
@@ -76,13 +78,24 @@ def main():
     # FIN 4 MURS
 
 
+    #Cross air
     vao = Text.initalize_geometry()
     texture = glutils.load_texture('fontB.jpg')
     o = Text('.', np.array([-0.05, -0.05], np.float32), np.array([0.05, 0.05], np.float32), vao, 0, programGUI_id, texture)
     viewer.add_object(o)
 
-    viewer.run()
+    # Barre de vie
+    o = Text('Vie', np.array([-1, 0.9], np.float32), np.array([-0.4, 1], np.float32), vao, 0, programGUI_id, texture)
+    viewer.add_object(o)
+    viewer.vie = o
 
+    # Score
+    o = Text('Vie', np.array([0.4, 0.9], np.float32), np.array([1, 1], np.float32), vao, 0, programGUI_id, texture)
+    viewer.add_object(o)
+    viewer.score = o
+
+    viewer.run()
+    
 
 if __name__ == '__main__':
     main()

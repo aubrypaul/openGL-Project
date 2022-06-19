@@ -14,6 +14,10 @@ class ViewerGL:
 
         self.lastX, self.lastY = 0, 0
 
+        self.vie = None
+        self.score = None
+        self.score_chiffre = 0
+
 
 
         # initialisation de la librairie GLFW
@@ -45,9 +49,12 @@ class ViewerGL:
 
         self.objs = []
         self.touch = {}
+        
 
         if (glfw.raw_mouse_motion_supported()):
             glfw.set_input_mode(self.window, glfw.RAW_MOUSE_MOTION, glfw.TRUE);
+    
+    
         
     def run(self):
         # boucle d'affichage
@@ -56,10 +63,13 @@ class ViewerGL:
             GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
 
             self.update_key()
-
+            
             self.update_zombie()
             self.update_bullet()
             self.update_player()
+            self.update_life()
+            self.update_score()
+
 
             for obj in self.objs:
                 GL.glUseProgram(obj.program)
@@ -67,7 +77,7 @@ class ViewerGL:
                     self.update_camera(obj.program)
                 obj.draw()
 
-            if self.player.vie(self.zombies) == False:
+            if self.player.player_death() == False:
                 glfw.set_window_should_close(self.window, glfw.TRUE)
 
             # changement de buffer d'affichage pour éviter un effet de scintillement
@@ -107,6 +117,7 @@ class ViewerGL:
         for zombie in self.zombies.all_zombies:
             if zombie.alive == False:
                 self.delete_zombie(zombie)
+                self.score_chiffre += 10
                 self.add_zombie()
     
     def add_zombie(self):
@@ -139,9 +150,7 @@ class ViewerGL:
     
     def update_player(self):
         self.player.update(self.zombies)
-    
-    def vie_player(self):
-        self.player.vie(self.zombies)
+
 
     def set_camera(self, cam):
         self.cam = cam
@@ -256,3 +265,15 @@ class ViewerGL:
 
         #Forcer personnage à suivre la cam
         self.objs[0].transformation.rotation_euler[pyrr.euler.index().yaw] = self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] + np.pi
+
+    
+    def player_life(self):
+        self.vie_joueur = self.player.vie(self.zombies)
+        # print(self.vie_joueur)
+        return str(self.vie_joueur)
+
+    def update_life(self):
+        self.vie.value = 'VIE : ' + self.player_life() + '/ 50'
+    
+    def update_score(self):
+        self.score.value = 'SCORE : ' + str(self.score_chiffre)

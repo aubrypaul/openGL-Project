@@ -22,6 +22,7 @@ class Player():
     def update(self, zombies):
         self.check_collision()
         self.vie(zombies)
+        self.player_death()
         # print(self.life, self.alive)
     
     def check_collision(self):
@@ -39,6 +40,9 @@ class Player():
             tr = zombie.transform
             if tr.translation.x > self.transformation.translation.x - 0.5 and tr.translation.x < self.transformation.translation.x + 0.5 and tr.translation.z > self.transformation.translation.z - 0.5 and tr.translation.z < self.transformation.translation.z + 0.5:
                 self.life -= 1
+        return self.life
+    
+    def player_death(self):
         if self.life <= 0:
             self.alive = False
         return self.alive
