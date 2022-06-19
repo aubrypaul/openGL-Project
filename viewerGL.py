@@ -11,12 +11,15 @@ import time
 class ViewerGL:
     def __init__(self):
 
-
+        self.WIDTH = 1024
+        self.HEIGHT = 768
         self.lastX, self.lastY = 0, 0
+        self.SENSI = 0.005
 
         self.vie = None
         self.score = None
         self.score_chiffre = 0
+        self.scene = 0
 
 
 
@@ -29,14 +32,14 @@ class ViewerGL:
         glfw.window_hint(glfw.OPENGL_PROFILE, glfw.OPENGL_CORE_PROFILE)
         # création et paramétrage de la fenêtre
         glfw.window_hint(glfw.RESIZABLE, False)
-        self.window = glfw.create_window(900, 900, 'OpenGL', None, None)
+        self.window = glfw.create_window(self.WIDTH, self.HEIGHT, 'OpenGL', None, None)
         # paramétrage de la fonction de gestion des évènements
         glfw.set_key_callback(self.window, self.key_callback)
         glfw.set_mouse_button_callback(self.window, self.click_callback)
 
         #souris
-        glfw.set_cursor_pos_callback(self.window, self.mouse_callback)
-        glfw.set_input_mode(self.window, glfw.CURSOR, glfw.CURSOR_DISABLED)
+        # glfw.set_cursor_pos_callback(self.window, self.mouse_callback)
+        # glfw.set_input_mode(self.window, glfw.CURSOR, glfw.CURSOR_DISABLED)
 
         # activation du context OpenGL pour la fenêtre
         glfw.make_context_current(self.window)
@@ -48,15 +51,25 @@ class ViewerGL:
         print(f"OpenGL: {GL.glGetString(GL.GL_VERSION).decode('ascii')}")
 
         self.objs = []
+        self.objs_menu = []
         self.touch = {}
         
 
         if (glfw.raw_mouse_motion_supported()):
             glfw.set_input_mode(self.window, glfw.RAW_MOUSE_MOTION, glfw.TRUE);
     
-    
+    def run_menu(self):
+        #self.scene = 1
+        # nettoyage de la fenêtre : fond et profondeur
+        GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
+        for obj in self.objs_menu:
+            GL.glUseProgram(obj.program)
+            obj.draw()
         
-    def run(self):
+        glfw.swap_buffers(self.window)
+        glfw.poll_events() 
+        
+    def run_game(self):
         # boucle d'affichage
         while not glfw.window_should_close(self.window):
             # nettoyage de la fenêtre : fond et profondeur
@@ -84,6 +97,25 @@ class ViewerGL:
             glfw.swap_buffers(self.window)
             # gestion des évènements
             glfw.poll_events()
+
+    def run(self):
+
+        while not glfw.window_should_close(self.window):
+            
+            while not glfw.window_should_close(self.window) and self.scene == 0:
+                self.run_menu()
+            
+            glfw.set_cursor_pos_callback(self.window, self.mouse_callback_game)
+            glfw.set_input_mode(self.window, glfw.CURSOR, glfw.CURSOR_DISABLED)
+
+            while not glfw.window_should_close(self.window) and self.scene == 1:
+                self.run_game()
+
+            glfw.set_input_mode(self.window, glfw.CURSOR, glfw.CURSOR_NORMAL)
+
+            # while not glfw.window_should_close(self.window) and self.scene == 2:
+            #     self.run_fin()
+
         
     def key_callback(self, win, key, scancode, action, mods):
         # sortie du programme si appui sur la touche 'échappement'
@@ -95,7 +127,16 @@ class ViewerGL:
         self.touch[key] = action
         if key == glfw.MOUSE_BUTTON_LEFT and action == glfw.PRESS:
             self.fire_bullet()
-
+        if self.scene == 0:
+            x , y = glfw.get_cursor_pos(self.window)
+            x = (x-self.WIDTH/2)/self.WIDTH*2
+            y = (-y+self.HEIGHT/2)/self.HEIGHT*2
+            b_play = self.objs_menu[0]
+            b_quit = self.objs_menu[1]
+            if b_play.bottomLeft[0]<x<b_play.topRight[0] and b_play.bottomLeft[1]<y<b_play.topRight[1]:
+                self.scene = 1
+            if b_quit.bottomLeft[0]<x<b_quit.topRight[0] and b_quit.bottomLeft[1]<y<b_quit.topRight[1]:
+                glfw.set_window_should_close(self.window, glfw.TRUE)
     
     def add_object(self, obj):
         self.objs.append(obj)
@@ -249,7 +290,7 @@ class ViewerGL:
 
         # if glfw.KEY_SPACE in self.touch and self.touch[glfw.KEY_SPACE] > 0:
 
-    def mouse_callback(self, window, xpos, ypos):
+    def mouse_callback_game(self, window, xpos, ypos):
 
         xoffset = (xpos - self.lastX)*self.SENSI
         yoffset = (ypos - self.lastY)*self.SENSI

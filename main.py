@@ -94,6 +94,14 @@ def main():
     viewer.add_object(o)
     viewer.score = o
 
+    # Bouton démarrer
+    o = Text('Commencer', np.array([-0.7, 0.25], np.float32), np.array([0.7, 0.55], np.float32), vao, 2, programGUI_id, texture)
+    viewer.objs_menu.append(o)
+
+    # Bouton quitter
+    o = Text('Quitter', np.array([-0.7, -0.5], np.float32), np.array([0.7, 0.05], np.float32), vao, 2, programGUI_id, texture)
+    viewer.objs_menu.append(o)
+
     viewer.run()
     
 

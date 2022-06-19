@@ -62,8 +62,8 @@ class Zombies():
     def add_zombie(self):
             tr = Transformation3D()
             theta = random.random()*2*np.pi
-            tr.translation.x = 50*np.cos(theta) + self.player_tr.translation.x
-            tr.translation.z = 50*np.sin(theta) + self.player_tr.translation.z
+            tr.translation.x = 20*np.cos(theta) + self.player_tr.translation.x
+            tr.translation.z = 20*np.sin(theta) + self.player_tr.translation.z
             tr.rotation_euler[pyrr.euler.index().yaw] += theta + np.pi/2
             tr.translation.y = -np.amin(self.model.vertices, axis=0)[1]
             zombie = Zombie(tr,self.program3d_id,self.vao,self.nb_triangles,self.texture, self.player_tr)
