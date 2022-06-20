@@ -4,6 +4,7 @@ import glfw
 import pyrr
 import numpy as np
 from cpe3d import Object3D
+import glutils
 from zombie import Zombies
 from bullet import Bullets
 import time
@@ -18,8 +19,14 @@ class ViewerGL:
 
         self.vie = None
         self.score = None
+        self.score_end = None
         self.score_chiffre = 0
         self.scene = 0
+
+        self.texte_timer = None
+        self.temps_partie = 30
+        self.temps_depart = None
+        self.temps_pause = None
 
 
 
@@ -52,6 +59,7 @@ class ViewerGL:
 
         self.objs = []
         self.objs_menu = []
+        self.objs_end_game_menu = []
         self.touch = {}
         
 
@@ -70,18 +78,25 @@ class ViewerGL:
         glfw.poll_events() 
         
     def run_game(self):
+
+        
+        self.temps_depart = time.time()
+        self.temps_origine = time.time()
+        
         # boucle d'affichage
-        while not glfw.window_should_close(self.window):
+        while self.scene == 1:
             # nettoyage de la fenêtre : fond et profondeur
             GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
 
             self.update_key()
             
+            print(self.scene)
             self.update_zombie()
             self.update_bullet()
             self.update_player()
             self.update_life()
             self.update_score()
+            self.update_timer()
 
 
             for obj in self.objs:
@@ -90,13 +105,26 @@ class ViewerGL:
                     self.update_camera(obj.program)
                 obj.draw()
 
+                
+
             if self.player.player_death() == False:
-                glfw.set_window_should_close(self.window, glfw.TRUE)
+                self.scene = 2
+                
 
             # changement de buffer d'affichage pour éviter un effet de scintillement
             glfw.swap_buffers(self.window)
             # gestion des évènements
             glfw.poll_events()
+    
+    def run_end_game(self):
+        GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
+        for obj in self.objs_end_game_menu:
+            GL.glUseProgram(obj.program)
+            obj.draw()
+        
+        glfw.swap_buffers(self.window)
+        glfw.poll_events() 
+
 
     def run(self):
 
@@ -113,14 +141,15 @@ class ViewerGL:
 
             glfw.set_input_mode(self.window, glfw.CURSOR, glfw.CURSOR_NORMAL)
 
-            # while not glfw.window_should_close(self.window) and self.scene == 2:
-            #     self.run_fin()
+            while not glfw.window_should_close(self.window) and self.scene == 2:
+                self.run_end_game()
+
 
         
     def key_callback(self, win, key, scancode, action, mods):
         # sortie du programme si appui sur la touche 'échappement'
         if key == glfw.KEY_ESCAPE and action == glfw.PRESS:
-            glfw.set_window_should_close(win, glfw.TRUE)
+            self.scene = 0
         self.touch[key] = action
 
     def click_callback(self, win, key, action, mods):
@@ -133,6 +162,16 @@ class ViewerGL:
             y = (-y+self.HEIGHT/2)/self.HEIGHT*2
             b_play = self.objs_menu[0]
             b_quit = self.objs_menu[1]
+            if b_play.bottomLeft[0]<x<b_play.topRight[0] and b_play.bottomLeft[1]<y<b_play.topRight[1]:
+                self.scene = 1
+            if b_quit.bottomLeft[0]<x<b_quit.topRight[0] and b_quit.bottomLeft[1]<y<b_quit.topRight[1]:
+                glfw.set_window_should_close(self.window, glfw.TRUE)
+        if self.scene == 2:
+            x , y = glfw.get_cursor_pos(self.window)
+            x = (x-self.WIDTH/2)/self.WIDTH*2
+            y = (-y+self.HEIGHT/2)/self.HEIGHT*2
+            b_play = self.objs_end_game_menu[1]
+            b_quit = self.objs_end_game_menu[2]
             if b_play.bottomLeft[0]<x<b_play.topRight[0] and b_play.bottomLeft[1]<y<b_play.topRight[1]:
                 self.scene = 1
             if b_quit.bottomLeft[0]<x<b_quit.topRight[0] and b_quit.bottomLeft[1]<y<b_quit.topRight[1]:
@@ -318,3 +357,15 @@ class ViewerGL:
     
     def update_score(self):
         self.score.value = 'SCORE : ' + str(self.score_chiffre)
+        self.score_end.value = 'SCORE : ' + str(self.score_chiffre)
+
+
+    def update_timer(self):
+        temps = self.temps_partie + self.temps_depart - time.time()
+        self.texte_timer.value = str(temps)[:4]
+        self.texte_timer.bottomLeft = np.array([-0.17, 0.80], np.float32)
+        self.texte_timer.topRight = np.array([0.17, 0.95], np.float32)
+        self.texte_timer.texture = glutils.load_texture('fontB.jpg')
+
+        if temps < 0:
+            self.scene = 2

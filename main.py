@@ -90,17 +90,29 @@ def main():
     viewer.vie = o
 
     # Score
-    o = Text('Vie', np.array([0.4, 0.9], np.float32), np.array([1, 1], np.float32), vao, 0, programGUI_id, texture)
+    o = Text('Score', np.array([0.4, 0.9], np.float32), np.array([1, 1], np.float32), vao, 0, programGUI_id, texture)
     viewer.add_object(o)
     viewer.score = o
 
+    # Score fin jeu
+    o = Text('Score', np.array([-0.3, -0.08], np.float32), np.array([0.3, 0.08], np.float32), vao, 0, programGUI_id, texture)
+    viewer.objs_end_game_menu.append(o)
+    viewer.score_end = o
+
     # Bouton démarrer
-    o = Text('Commencer', np.array([-0.7, 0.25], np.float32), np.array([0.7, 0.55], np.float32), vao, 2, programGUI_id, texture)
+    o = Text('Commencer un partie', np.array([-0.6, 0.1], np.float32), np.array([0.6, 0.4], np.float32), vao, 2, programGUI_id, texture)
     viewer.objs_menu.append(o)
+    viewer.objs_end_game_menu.append(o)
 
     # Bouton quitter
-    o = Text('Quitter', np.array([-0.7, -0.5], np.float32), np.array([0.7, 0.05], np.float32), vao, 2, programGUI_id, texture)
+    o = Text('Quitter', np.array([-0.3, -0.4], np.float32), np.array([0.3, -0.1], np.float32), vao, 2, programGUI_id, texture)
     viewer.objs_menu.append(o)
+    viewer.objs_end_game_menu.append(o)
+
+    #timer
+    o = Text('Timer', np.array([-0.15, 0.85], np.float32), np.array([0.15, 0.95], np.float32), vao, 2, programGUI_id, texture)
+    viewer.add_object(o)
+    viewer.texte_timer = o
 
     viewer.run()
     
