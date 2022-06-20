@@ -6,7 +6,7 @@ import numpy as np
 from cpe3d import Object3D
 import glutils
 from zombie import Zombies
-from bullet import Bullets
+from bullet import Bullets, Bullet
 import time
 
 class ViewerGL:
@@ -90,7 +90,6 @@ class ViewerGL:
 
             self.update_key()
             
-            print(self.scene)
             self.update_zombie()
             self.update_bullet()
             self.update_player()
