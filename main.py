@@ -102,7 +102,7 @@ def main():
     # Bouton démarrer
     o = Text('Commencer un partie', np.array([-0.6, 0.1], np.float32), np.array([0.6, 0.4], np.float32), vao, 2, programGUI_id, texture)
     viewer.objs_menu.append(o)
-    viewer.objs_end_game_menu.append(o)
+    # viewer.objs_end_game_menu.append(o)
 
     # Bouton quitter
     o = Text('Quitter', np.array([-0.3, -0.4], np.float32), np.array([0.3, -0.1], np.float32), vao, 2, programGUI_id, texture)

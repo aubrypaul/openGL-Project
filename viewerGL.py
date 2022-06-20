@@ -169,10 +169,7 @@ class ViewerGL:
             x , y = glfw.get_cursor_pos(self.window)
             x = (x-self.WIDTH/2)/self.WIDTH*2
             y = (-y+self.HEIGHT/2)/self.HEIGHT*2
-            b_play = self.objs_end_game_menu[1]
-            b_quit = self.objs_end_game_menu[2]
-            if b_play.bottomLeft[0]<x<b_play.topRight[0] and b_play.bottomLeft[1]<y<b_play.topRight[1]:
-                self.scene = 1
+            b_quit = self.objs_end_game_menu[1]
             if b_quit.bottomLeft[0]<x<b_quit.topRight[0] and b_quit.bottomLeft[1]<y<b_quit.topRight[1]:
                 glfw.set_window_should_close(self.window, glfw.TRUE)
     
