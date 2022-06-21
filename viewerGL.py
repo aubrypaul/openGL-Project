@@ -83,10 +83,11 @@ class ViewerGL:
         self.temps_origine = time.time()
         
         # boucle d'affichage
-        while self.scene == 1:
+        while self.scene == 1 and not glfw.window_should_close(self.window):
             GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
 
             self.update_key()
+            self.key_callback
             
             self.update_zombie()
             self.update_bullet()
