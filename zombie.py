@@ -13,7 +13,7 @@ class Zombie():
         self.nb_triangles = nb_triangles
         self.texture = texture
         self.object = Object3D(self.vao, self.nb_triangles, self.program3d_id, self.texture, self.transform)
-        self.vel =  0.1 + random.random()*0.05
+        self.vel =  0#.1 + random.random()*0.05
         self.alive = True
         self.player_tr = player_tr
 

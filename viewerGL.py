@@ -67,8 +67,7 @@ class ViewerGL:
             glfw.set_input_mode(self.window, glfw.RAW_MOUSE_MOTION, glfw.TRUE);
     
     def run_menu(self):
-        #self.scene = 1
-        # nettoyage de la fenêtre : fond et profondeur
+
         GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
         for obj in self.objs_menu:
             GL.glUseProgram(obj.program)
@@ -85,7 +84,6 @@ class ViewerGL:
         
         # boucle d'affichage
         while self.scene == 1:
-            # nettoyage de la fenêtre : fond et profondeur
             GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
 
             self.update_key()
