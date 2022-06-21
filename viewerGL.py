@@ -296,17 +296,6 @@ class ViewerGL:
             self.cam.transformation.translation = self.objs[0].transformation.translation + pyrr.Vector3([0, 1, 5])
             
 
-        # if glfw.KEY_Q in self.touch and self.touch[glfw.KEY_Q] > 0:
-        
-        #     else:
-        #         self.objs[0].transformation.rotation_euler[pyrr.euler.index().yaw] -= 0.1
-        # if glfw.KEY_D in self.touch and self.touch[glfw.KEY_D] > 0:
-        #     if glfw.KEY_LEFT_CONTROL in self.touch and self.touch[glfw.KEY_LEFT_CONTROL]:
-        #         self.objs[0].transformation.rotation_euler[pyrr.euler.index().yaw] += 0.015
-        #     else:
-        #         self.objs[0].transformation.rotation_euler[pyrr.euler.index().yaw] += 0.1
-
-
         #BOUGER LA CAM ------------------------
         # if glfw.KEY_I in self.touch and self.touch[glfw.KEY_I] > 0:
         #     self.cam.transformation.rotation_euler[pyrr.euler.index().roll] -= 0.1
@@ -317,13 +306,6 @@ class ViewerGL:
         # if glfw.KEY_L in self.touch and self.touch[glfw.KEY_L] > 0:
         #     self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] += 0.1
 
-
-        
-            
-            
-
-
-        # if glfw.KEY_SPACE in self.touch and self.touch[glfw.KEY_SPACE] > 0:
 
     def mouse_callback_game(self, window, xpos, ypos):
 

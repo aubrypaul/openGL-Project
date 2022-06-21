@@ -78,7 +78,7 @@ def main():
     # FIN 4 MURS
 
 
-    #Cross air
+    # Crosshair
     vao = Text.initalize_geometry()
     texture = glutils.load_texture('fontB.jpg')
     o = Text('.', np.array([-0.05, -0.05], np.float32), np.array([0.05, 0.05], np.float32), vao, 0, programGUI_id, texture)
@@ -100,7 +100,7 @@ def main():
     viewer.score_end = o
 
     # Bouton démarrer
-    o = Text('Commencer un partie', np.array([-0.6, 0.1], np.float32), np.array([0.6, 0.4], np.float32), vao, 2, programGUI_id, texture)
+    o = Text('Commencer une partie', np.array([-0.6, 0.1], np.float32), np.array([0.6, 0.4], np.float32), vao, 2, programGUI_id, texture)
     viewer.objs_menu.append(o)
     # viewer.objs_end_game_menu.append(o)
 
@@ -109,7 +109,7 @@ def main():
     viewer.objs_menu.append(o)
     viewer.objs_end_game_menu.append(o)
 
-    #timer
+    # Timer
     o = Text('Timer', np.array([-0.15, 0.85], np.float32), np.array([0.15, 0.95], np.float32), vao, 2, programGUI_id, texture)
     viewer.add_object(o)
     viewer.texte_timer = o
