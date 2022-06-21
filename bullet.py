@@ -31,6 +31,7 @@ class Bullet():
             tr = zombie.transform
             if tr.translation.x > self.transform.translation.x and tr.translation.x < self.transform.translation.x + 0.034 + self.vel and tr.translation.z > self.transform.translation.z and tr.translation.z < self.transform.translation.z + 0.01 + self.vel:
                 zombie.alive = False
+                self.alive = False
     
 
     def in_limit(self):
