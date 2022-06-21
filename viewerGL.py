@@ -148,7 +148,7 @@ class ViewerGL:
     def key_callback(self, win, key, scancode, action, mods):
         # sortie du programme si appui sur la touche 'échappement'
         if key == glfw.KEY_ESCAPE and action == glfw.PRESS:
-            self.scene = 0
+            glfw.set_window_should_close(self.window, glfw.TRUE)
         self.touch[key] = action
 
     def click_callback(self, win, key, action, mods):
