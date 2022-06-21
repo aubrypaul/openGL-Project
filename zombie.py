@@ -6,7 +6,7 @@ import pyrr
 import random
 
 class Zombie():
-    def __init__(self, transform, program3d_id, vao, nb_triangles, texture, player_tr):
+    def __init__(self, transform, program3d_id, vao, nb_triangles, texture):
         self.transform = transform
         self.program3d_id = program3d_id
         self.vao = vao
@@ -15,7 +15,6 @@ class Zombie():
         self.object = Object3D(self.vao, self.nb_triangles, self.program3d_id, self.texture, self.transform)
         self.vel =  0.1 + random.random()*0.05
         self.alive = True
-        self.player_tr = player_tr
 
     def move(self):
         self.transform.translation += \
@@ -66,7 +65,7 @@ class Zombies():
             tr.translation.z = 20*np.sin(theta) + self.player_tr.translation.z
             tr.rotation_euler[pyrr.euler.index().yaw] += theta + np.pi/2
             tr.translation.y = -np.amin(self.model.vertices, axis=0)[1]
-            zombie = Zombie(tr,self.program3d_id,self.vao,self.nb_triangles,self.texture, self.player_tr)
+            zombie = Zombie(tr,self.program3d_id,self.vao,self.nb_triangles,self.texture)
             self.all_zombies.append(zombie)
             return zombie
     
